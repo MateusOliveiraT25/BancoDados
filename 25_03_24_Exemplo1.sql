@@ -1,0 +1,2 @@
+CREATE DATABASE aula_sql;
+DROP DATABASE aula_sql;
