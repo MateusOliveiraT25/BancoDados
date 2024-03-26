@@ -41,3 +41,26 @@ CREATE TABLE  IF  NOT EXISTS empregado(
 
 -- Seleciona todos os registros da tabela empregado
 SELECT * FROM empregado;
+
+--apagar a tabela
+DROP TABLE empregado;
+
+-- Cria uma tabela FOREIGN KEY
+CREATE TABLE  IF  NOT EXISTS empregado(
+    Ecodigo INT NOT NULL,
+    Enome VARCHAR(40) NOT NULL,
+    CPF VARCHAR (15) NOT NULL,
+    Salario DECIMAL (7,2),
+    Dcodigo INT NOT NULL,
+    PRIMARY KEY (Ecodigo, Enome),
+    FOREIGN KEY (Dcodigo) REFERENCES departamento
+);
+
+--ALTERAR TABELAS COM O ALTER TABLE ADD(ADD COLUNA)
+ALTER TABLE empregado ADD sexo CHAR(1);
+
+-- Seleciona todos os registros da tabela empregado
+SELECT * FROM empregado;
+
+--ALTERAR TABELAS COM O ALTER TABLE Rename
+ALTER TABLE empregado RENAME to funcionario;
