@@ -10,7 +10,7 @@ CREATE DATABASE DB_AULA25MAR24;
 USE DB_AULA25MAR24;
 
 -- Cria uma tabela chamada fornecedor com quatro colunas: Fcodigo, Fnome, Status e Cidade
-CREATE TABLE  IF  NOT EXISTS fornecedor( -- criea tabela se nao existir e se existir nao acontece nada 
+CREATE TABLE  IF  NOT EXISTS fornecedor( -- cria a tabela se nao existir e se existir nao acontece nada nem erro
     Fcodigo INT NOT NULL, -- Coluna Fcodigo do tipo inteiro que não pode ser nula
     Fnome  VARCHAR(30) NOT NULL, -- Coluna Fnome do tipo varchar com máximo de 30 caracteres que não pode ser nula
     Status INT, -- Coluna Status do tipo inteiro (pode ser nulo)
@@ -19,3 +19,25 @@ CREATE TABLE  IF  NOT EXISTS fornecedor( -- criea tabela se nao existir e se exi
 
 -- Seleciona todos os registros da tabela fornecedor
 SELECT * FROM fornecedor;
+
+CREATE TABLE  IF  NOT EXISTS departamento(
+Dcodigo INT NOT NULL,
+Dnome VARCHAR(30) NOT NULL,
+ Cidade VARCHAR(30),
+ PRIMARY KEY (Dcodigo)
+);
+
+-- Seleciona todos os registros da tabela Departamento
+SELECT * FROM Departamento;
+
+CREATE TABLE  IF  NOT EXISTS empregado(
+    Ecodigo INT NOT NULL,
+    Enome VARCHAR(40) NOT NULL,
+    CPF VARCHAR (15) NOT NULL,
+    Salario DECIMAL (7,2),
+    Dcodigo INT NOT NULL,
+    PRIMARY KEY (Ecodigo, Enome)
+);
+
+-- Seleciona todos os registros da tabela empregado
+SELECT * FROM empregado;
