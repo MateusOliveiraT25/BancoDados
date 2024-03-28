@@ -64,3 +64,4 @@ SELECT * FROM empregado;
 
 --ALTERAR TABELAS COM O ALTER TABLE Rename
 ALTER TABLE empregado RENAME to funcionario;
+
