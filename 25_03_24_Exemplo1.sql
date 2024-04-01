@@ -7,7 +7,7 @@ DROP DATABASE aula_sql;
 CREATE DATABASE DB_AULA25MAR24;
 -- No SQL padrão, o comando USE é utilizado para selecionar o banco de dados a ser usado. 
 -- No PostgreSQL, por exemplo, você mudaria de banco usando o comando de conexão do seu cliente de banco de dados ou ferramentas de linha de comando.
-USE DB_AULA25MAR24;
+--USE DB_AULA25MAR24;
 
 -- Cria uma tabela chamada fornecedor com quatro colunas: Fcodigo, Fnome, Status e Cidade
 CREATE TABLE  IF  NOT EXISTS fornecedor( -- cria a tabela se nao existir e se existir nao acontece nada nem erro
