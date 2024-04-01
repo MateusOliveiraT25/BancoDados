@@ -1,4 +1,4 @@
-CREATE DATABASE aula_25_03;
+CREATE DATABASE aula_01_04;
 
 CREATE TABLE IF NOT EXISTS fornecedor (
     fcodigo INT NOT NULL PRIMARY KEY, -- Identificador único para cada fornecedor, não pode ser nulo
@@ -19,5 +19,24 @@ CREATE TABLE IF NOT EXISTS peca (
 CREATE TABLE IF NOT EXISTS instituicao (
     icodigo INT NOT NULL PRIMARY KEY, -- Identificador único para cada instituição, não pode ser nulo
     nome VARCHAR(255) NOT NULL -- Nome da instituição, não pode ser nulo
+);
+
+CREATE TABLE IF NOT EXISTS Projeto (
+    PRcod INT NOT NULL PRIMARY KEY, -- Código do projeto, único para cada projeto
+    PRnome VARCHAR(255) NOT NULL, -- Nome do projeto, não pode ser nulo
+    Cidade VARCHAR(255) NOT NULL, -- Cidade do projeto, não pode ser nulo
+    icodigo INT NOT NULL, -- Código da instituição associada, não pode ser nulo
+    FOREIGN KEY (icodigo) REFERENCES instituicao(icodigo) -- Define Icod como chave estrangeira que referencia icodigo da tabela instituicao
+);
+
+CREATE TABLE IF NOT EXISTS Fornecimento (
+    Fcodigo INT NOT NULL, -- Código do fornecedor
+    pcodigo INT NOT NULL, -- Código da peça
+    PRcod INT NOT NULL, -- Código do projeto
+    Quantidade INT NOT NULL, -- Quantidade fornecida
+    PRIMARY KEY (Fcodigo, pcodigo, PRcod), -- Define uma chave primária composta
+    FOREIGN KEY (Fcodigo) REFERENCES fornecedor(Fcodigo), -- Chave estrangeira referenciando fornecedores
+    FOREIGN KEY (pcodigo) REFERENCES peca(pcodigo), -- Chave estrangeira referenciando peças
+    FOREIGN KEY (PRcod) REFERENCES Projeto(PRcod) -- Chave estrangeira referenciando projetos
 );
 
