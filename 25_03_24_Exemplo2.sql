@@ -30,13 +30,13 @@ CREATE TABLE IF NOT EXISTS Projeto (
 );
 
 CREATE TABLE IF NOT EXISTS Fornecimento (
-    Fcod INT NOT NULL, -- Código do fornecedor
-    Pcod INT NOT NULL, -- Código da peça
+    Fcodigo INT NOT NULL, -- Código do fornecedor
+    pcodigo INT NOT NULL, -- Código da peça
     PRcod INT NOT NULL, -- Código do projeto
     Quantidade INT NOT NULL, -- Quantidade fornecida
-    PRIMARY KEY (Fcod, Pcod, PRcod), -- Define uma chave primária composta
-    FOREIGN KEY (Fcod) REFERENCES fornecedor(Fcodigo), -- Chave estrangeira referenciando fornecedores
-    FOREIGN KEY (Pcod) REFERENCES peca(pcodigo), -- Chave estrangeira referenciando peças
+    PRIMARY KEY (Fcodigo, pcodigo, PRcod), -- Define uma chave primária composta
+    FOREIGN KEY (Fcodigo) REFERENCES fornecedor(Fcodigo), -- Chave estrangeira referenciando fornecedores
+    FOREIGN KEY (pcodigo) REFERENCES peca(pcodigo), -- Chave estrangeira referenciando peças
     FOREIGN KEY (PRcod) REFERENCES Projeto(PRcod) -- Chave estrangeira referenciando projetos
 );
 
