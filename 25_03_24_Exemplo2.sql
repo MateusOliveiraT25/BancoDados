@@ -61,24 +61,9 @@ CREATE TABLE IF NOT EXISTS Fornecimento (
     FOREIGN KEY (PRcod) REFERENCES Projeto(PRcod) -- Chave estrangeira referenciando projetos
 );
 
-
-
--- Remover tabelas existentes
-DROP TABLE IF EXISTS Fornecimento;
-DROP TABLE IF EXISTS Projeto;
-DROP TABLE IF EXISTS Peca;
-DROP TABLE IF EXISTS Cidade;
-DROP TABLE IF EXISTS Fornecedor;
-
--- Criar nova tabela Fornecedor
-CREATE TABLE IF NOT EXISTS Fornecedor (
-    Fcod SERIAL PRIMARY KEY, -- Código do fornecedor, autoincremento
-    Fnome VARCHAR(255) NOT NULL, -- Nome do fornecedor, não pode ser nulo
-    Status BOOLEAN, -- Status do fornecedor
-    Fone VARCHAR(20), -- Telefone do fornecedor
-    Ccod INT NOT NULL, -- Código da cidade, não pode ser nulo
-    FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod) -- Chave estrangeira referenciando a tabela Cidade
-);
+-- Adiciona a coluna Fone à tabela Fornecedor
+ALTER TABLE Fornecedor
+ADD COLUMN Fone VARCHAR(20);
 
 -- Criar nova tabela Cidade
 CREATE TABLE IF NOT EXISTS Cidade (
@@ -87,32 +72,41 @@ CREATE TABLE IF NOT EXISTS Cidade (
     uf VARCHAR(2) NOT NULL -- UF da cidade, não pode ser nulo
 );
 
--- Criar nova tabela Peca
-CREATE TABLE IF NOT EXISTS Peca (
-    Pcod SERIAL PRIMARY KEY, -- Código da peça, autoincremento
-    Pnome VARCHAR(255) NOT NULL, -- Nome da peça, não pode ser nulo
-    Cor VARCHAR(50) NOT NULL, -- Cor da peça, não pode ser nulo
-    Peso DECIMAL(10, 2) NOT NULL, -- Peso da peça, não pode ser nulo
-    Ccod INT NOT NULL, -- Código da cidade, não pode ser nulo
-    FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod) -- Chave estrangeira referenciando a tabela Cidade
-);
 
--- Criar nova tabela Projeto
-CREATE TABLE IF NOT EXISTS Projeto (
-    PRcod SERIAL PRIMARY KEY, -- Código do projeto, autoincremento
-    PRnome VARCHAR(255) NOT NULL, -- Nome do projeto, não pode ser nulo
-    Ccod INT NOT NULL, -- Código da cidade, não pode ser nulo
-    FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod) -- Chave estrangeira referenciando a tabela Cidade
-);
 
--- Criar nova tabela Fornecimento
-CREATE TABLE IF NOT EXISTS Fornecimento (
-    Fcod INT NOT NULL, -- Código do fornecedor
-    Pcod INT NOT NULL, -- Código da peça
-    PRcod INT NOT NULL, -- Código do projeto
-    Quantidade INT NOT NULL, -- Quantidade fornecida
-    PRIMARY KEY (Fcod, Pcod, PRcod), -- Define uma chave primária composta
-    FOREIGN KEY (Fcod) REFERENCES Fornecedor(Fcod), -- Chave estrangeira referenciando a tabela Fornecedor
-    FOREIGN KEY (Pcod) REFERENCES Peca(Pcod), -- Chave estrangeira referenciando a tabela Peca
-    FOREIGN KEY (PRcod) REFERENCES Projeto(PRcod) -- Chave estrangeira referenciando a tabela Projeto
-);
+-- Adiciona a coluna Ccod à tabela Peca
+ALTER TABLE Peca
+ADD COLUMN Ccod INT NOT NULL;
+
+-- Adiciona uma restrição de chave estrangeira na coluna Ccod da tabela Peca, referenciando a tabela Cidade
+ALTER TABLE Peca
+ADD CONSTRAINT fk_Ccod
+FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod);
+
+-- Adiciona a coluna Ccod à tabela Projeto
+ALTER TABLE Projeto
+ADD COLUMN Ccod INT NOT NULL;
+
+-- Adiciona uma restrição de chave estrangeira na coluna Ccod da tabela Projeto, referenciando a tabela Cidade
+ALTER TABLE Projeto
+ADD CONSTRAINT fk_Ccod
+FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod);
+
+-- Remove a coluna cidade da tabela Peca
+ALTER TABLE Peca
+DROP COLUMN cidade;
+
+-- Remove a coluna cidade da tabela Projeto
+ALTER TABLE Projeto
+DROP COLUMN cidade;
+
+-- Remove a coluna cidade da tabela Projeto
+ALTER TABLE Projeto
+DROP COLUMN  icodigo;
+
+-- Remove a coluna cidade da tabela Fornecedor
+ALTER TABLE Fornecedor
+DROP COLUMN  cidade;
+
+-- Remover tabelas existentes
+DROP TABLE IF EXISTS instituicao ;
