@@ -1,4 +1,5 @@
 CREATE DATABASE aula_01_04;
+DROP DATABASE aula_01_04;
 
 CREATE TABLE IF NOT EXISTS fornecedor (
     fcodigo INT NOT NULL PRIMARY KEY, -- Identificador único para cada fornecedor, não pode ser nulo
@@ -30,6 +31,7 @@ CREATE TABLE IF NOT EXISTS Projeto (
 );
 
 CREATE TABLE IF NOT EXISTS Fornecimento (
+   
     Fcodigo INT NOT NULL, -- Código do fornecedor
     pcodigo INT NOT NULL, -- Código da peça
     PRcod INT NOT NULL, -- Código do projeto
@@ -42,5 +44,56 @@ CREATE TABLE IF NOT EXISTS Fornecimento (
 
 
 
---ALTERAR TABELAS COM O ALTER TABLE Rename
-ALTER TABLE empregado RENAME to funcionario;
+-- Remover tabelas existentes
+DROP TABLE IF EXISTS Fornecimento;
+DROP TABLE IF EXISTS Projeto;
+DROP TABLE IF EXISTS Peca;
+DROP TABLE IF EXISTS Cidade;
+DROP TABLE IF EXISTS Fornecedor;
+
+-- Criar nova tabela Fornecedor
+CREATE TABLE IF NOT EXISTS Fornecedor (
+    Fcod SERIAL PRIMARY KEY, -- Código do fornecedor, autoincremento
+    Fnome VARCHAR(255) NOT NULL, -- Nome do fornecedor, não pode ser nulo
+    Status BOOLEAN, -- Status do fornecedor
+    Fone VARCHAR(20), -- Telefone do fornecedor
+    Ccod INT NOT NULL, -- Código da cidade, não pode ser nulo
+    FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod) -- Chave estrangeira referenciando a tabela Cidade
+);
+
+-- Criar nova tabela Cidade
+CREATE TABLE IF NOT EXISTS Cidade (
+    Ccod SERIAL PRIMARY KEY, -- Código da cidade, autoincremento
+    Cnome VARCHAR(255) NOT NULL, -- Nome da cidade, não pode ser nulo
+    uf VARCHAR(2) NOT NULL -- UF da cidade, não pode ser nulo
+);
+
+-- Criar nova tabela Peca
+CREATE TABLE IF NOT EXISTS Peca (
+    Pcod SERIAL PRIMARY KEY, -- Código da peça, autoincremento
+    Pnome VARCHAR(255) NOT NULL, -- Nome da peça, não pode ser nulo
+    Cor VARCHAR(50) NOT NULL, -- Cor da peça, não pode ser nulo
+    Peso DECIMAL(10, 2) NOT NULL, -- Peso da peça, não pode ser nulo
+    Ccod INT NOT NULL, -- Código da cidade, não pode ser nulo
+    FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod) -- Chave estrangeira referenciando a tabela Cidade
+);
+
+-- Criar nova tabela Projeto
+CREATE TABLE IF NOT EXISTS Projeto (
+    PRcod SERIAL PRIMARY KEY, -- Código do projeto, autoincremento
+    PRnome VARCHAR(255) NOT NULL, -- Nome do projeto, não pode ser nulo
+    Ccod INT NOT NULL, -- Código da cidade, não pode ser nulo
+    FOREIGN KEY (Ccod) REFERENCES Cidade(Ccod) -- Chave estrangeira referenciando a tabela Cidade
+);
+
+-- Criar nova tabela Fornecimento
+CREATE TABLE IF NOT EXISTS Fornecimento (
+    Fcod INT NOT NULL, -- Código do fornecedor
+    Pcod INT NOT NULL, -- Código da peça
+    PRcod INT NOT NULL, -- Código do projeto
+    Quantidade INT NOT NULL, -- Quantidade fornecida
+    PRIMARY KEY (Fcod, Pcod, PRcod), -- Define uma chave primária composta
+    FOREIGN KEY (Fcod) REFERENCES Fornecedor(Fcod), -- Chave estrangeira referenciando a tabela Fornecedor
+    FOREIGN KEY (Pcod) REFERENCES Peca(Pcod), -- Chave estrangeira referenciando a tabela Peca
+    FOREIGN KEY (PRcod) REFERENCES Projeto(PRcod) -- Chave estrangeira referenciando a tabela Projeto
+);
