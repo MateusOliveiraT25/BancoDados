@@ -100,13 +100,8 @@ CREATE TABLE Pedidos_Produtos (
     FOREIGN KEY (ID_Produto) REFERENCES Produtos(ID)
 );
 --Defina uma restrição de chave composta na tabela "Pedidos_Produtos" utilizando os campos "ID_Pedido" e "ID_Produto".
-CREATE TABLE IF NOT EXISTS Pedidos_Produtos (
-    ID_Pedido INT,
-    ID_Produto INT,
-    PRIMARY KEY (ID_Pedido, ID_Produto), -- Isso define a chave composta
-    FOREIGN KEY (ID_Pedido) REFERENCES Pedidos(ID), -- Chave estrangeira para Pedidos
-    FOREIGN KEY (ID_Produto) REFERENCES Produtos(ID) -- Chave estrangeira para Produtos
-);
+ALTER TABLE Pedidos_Produtos
+ADD CONSTRAINT pk_pedidos_produtos PRIMARY KEY (ID_Pedido, ID_Produto);
 --Adicione um índice na coluna "Nome" da tabela "Produtos" para otimizar consultas por nome do produto.
 CREATE INDEX idx_nome_produtos ON Produtos(Nome);
 --Crie uma tabela chamada "Categorias" com os campos: ID (chave primária) e Nome.
@@ -154,10 +149,10 @@ VALUES
 --Associe alguns produtos aos pedidos na tabela "Pedidos_Produtos".
 INSERT INTO Pedidos_Produtos (ID_Pedido, ID_Produto)
 VALUES
-(1, 1), -- Produto 1 associado ao Pedido 1
-(1, 2), -- Produto 2 associado ao Pedido 1
-(2, 3), -- Produto 3 associado ao Pedido 2
-(2, 4); -- Produto 4 associado ao Pedido 2
+(4, 5), -- Produto 1 associado ao Pedido 1
+(7, 2), -- Produto 2 associado ao Pedido 1
+(4, 3), -- Produto 3 associado ao Pedido 2
+(5, 4); -- Produto 4 associado ao Pedido 2
 --Atualize o preço de um produto específico na tabela "Produtos".
 UPDATE Produtos
 SET Preco = 39.99
@@ -229,12 +224,6 @@ JOIN Pedidos pe ON pp.ID_Pedido = pe.ID
 WHERE pe.Status = 'Finalizado'
 GROUP BY c.Nome;
 --Liste os produtos que nunca foram associados a nenhum pedido na tabela "Pedidos_Produtos".
-SELECT *
-FROM Produtos
-WHERE ID NOT IN (
-    SELECT DISTINCT ID_Produto
-    FROM Pedidos_Produtos
-);
 
 
 
