@@ -110,3 +110,40 @@ DROP COLUMN  cidade;
 
 -- Remover tabelas existentes
 DROP TABLE IF EXISTS instituicao ;
+
+INSERT INTO Fornecedor (Fcod, Fnome, Status, Fone, Ccod)
+VALUES
+(1, 'Kalunga', TRUE, '1930234066', 11),
+(2, 'LLC Logística', FALSE, '1130245578', 12),
+(3, 'Velho Barreiro', TRUE, '1930324068', 13),
+(4, 'Hyundai', TRUE, '1930224545', 14);
+
+
+INSERT INTO Cidade (Ccod, Cnome, uf)
+VALUES
+(11, 'Limeira', 'SP'),
+(12, 'São Paulo', 'SP'),
+(13, 'Rio Claro', 'SP'),
+(14, 'Piracicaba', 'SP');
+
+
+INSERT INTO Peca (Pcod, Pnome, Cor, Peso, Ccod)
+VALUES
+('0001', 'Processador', 'Padrão', 300, 13),
+('0002', 'Lona', 'Azul', 12, 11),
+('0003', 'Cachaça', 'Transparente', 11, NULL), -- Assumindo que não há um código de cidade para a cachaça
+('0004', 'Hyundai Creta', NULL, 100, 10000); -- Assumindo que a cor do Hyundai Creta é desconhecida
+
+
+INSERT INTO Projeto (PRcod, PRnome, Ccod)
+VALUES
+(1, 'Eletrônicos', 11),
+(2, 'Mecânicos', 13),
+(3, 'Escolas', 12);
+
+
+INSERT INTO Fornecimento (Fcod, Pcod, PRcod, Quantidade)
+VALUES
+(1, '0001', 1, 660),
+(2, '0002', 3, 10),
+(4, '0004', 2, 220);
