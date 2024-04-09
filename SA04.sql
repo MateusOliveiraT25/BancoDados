@@ -1,4 +1,4 @@
-CREATE DATABASE sa4_db;
+CREATE DATABASE Ex1sa4_db;
 -- Ex.1  
 --DDL (Data Definition Language) 
 --Crie uma tabela chamada "Clientes" com os seguintes campos: ID (chave primária), Nome, Sobrenome, e Email.
@@ -78,6 +78,7 @@ JOIN
     Clientes c ON p.ID_Cliente = c.ID
 WHERE 
     p.Data_Pedido >= CURRENT_DATE - INTERVAL '30 days';
+CREATE DATABASE Ex2sa4_db;    
 --Ex.2 
 --DDL (Data Definition Language) 
 --Crie uma tabela chamada "Produtos" com os seguintes campos: ID (chave primária), Nome, Descrição e Preço.
@@ -90,6 +91,13 @@ CREATE TABLE Produtos (
 --Adicione uma restrição para garantir que o campo "Preço" na tabela "Produtos" seja positivo.
 ALTER TABLE Produtos
 ADD CONSTRAINT preco_positivo CHECK (Preco > 0);
+--Crie uma tabela chamada “Pedidos” com os campos (ID(PK), Data, Valor, Status)
+CREATE TABLE Pedidos (
+    ID INT PRIMARY KEY,
+    Data DATE,
+    Valor DECIMAL(10, 2),
+    Status VARCHAR(255)
+);
 --Crie uma tabela de junção chamada "Pedidos_Produtos" para registrar os produtos associados a cada pedido, contendo os campos:
 -- ID_Pedido (chave estrangeira referenciando a tabela "Pedidos") e ID_Produto (chave estrangeira referenciando a tabela "Produtos").
 CREATE TABLE Pedidos_Produtos (
@@ -224,6 +232,9 @@ JOIN Pedidos pe ON pp.ID_Pedido = pe.ID
 WHERE pe.Status = 'Finalizado'
 GROUP BY c.Nome;
 --Liste os produtos que nunca foram associados a nenhum pedido na tabela "Pedidos_Produtos".
+SELECT *
+FROM Produtos
+WHERE ID NOT IN (SELECT DISTINCT ID_Produto FROM Pedidos_Produtos);
 
 
 
