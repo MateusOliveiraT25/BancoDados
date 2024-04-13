@@ -1,4 +1,5 @@
 CREATE DATABASE Ex1sa4_db;
+DROP DATABASE Ex1sa4_db;
 -- Ex.1  
 --DDL (Data Definition Language) 
 --Crie uma tabela chamada "Clientes" com os seguintes campos: ID (chave primária), Nome, Sobrenome, e Email.
@@ -42,14 +43,14 @@ VALUES
 -- Insira cinco novos registros de pedidos na tabela "Pedidos", associando-os a diferentes clientes.
 INSERT INTO Pedidos (ID_Cliente, Data_Pedido, Total, Status)
 VALUES
-(1, '2024-04-07', 100, 'Em andamento'),
+(1, '2024-02-07', 100, 'Em andamento'),
 (2, '2024-04-08', 150, 'Cancelado'),
-(3, '2024-04-09', 200, 'Em andamento'),
-(1, '2024-04-10', 120, 'Finalizado'),
-(2, '2024-02-11', 180, 'Em andamento');
+(3, '2024-04-14', 200, 'Em andamento'),
+(1, '2024-03-10', 120, 'Finalizado'),
+(2, '2024-01-29', 180, 'Em andamento');
 --Atualize o campo "Total" de um pedido específico na tabela "Pedidos".
 UPDATE Pedidos
-SET Total = 900
+SET Total = 258
 WHERE ID = 1;
 --Exclua um cliente da tabela "Clientes" e seus respectivos pedidos na tabela "Pedidos".
 BEGIN TRANSACTION;
@@ -68,21 +69,29 @@ SELECT *
 FROM Pedidos
 WHERE Status = 'Em andamento';
 --Liste o nome do cliente, a data do pedido e o total de cada pedido feito nos últimos 30 dias.
+-- Seleciona o nome do cliente, a data do pedido e o total do pedido
 SELECT 
     c.Nome AS Nome_Cliente, 
     p.Data_Pedido, 
     p.Total
 FROM 
     Pedidos p
+-- Junta a tabela Pedidos com a tabela Clientes usando o ID_Cliente
 JOIN 
     Clientes c ON p.ID_Cliente = c.ID
+-- Filtra apenas os pedidos feitos nos últimos 30 dias
 WHERE 
-    p.Data_Pedido >= CURRENT_DATE - INTERVAL '30 days';
-CREATE DATABASE Ex2sa4_db;    
+    p.Data_Pedido >= CURRENT_DATE - 30;
+
+
+
+
+CREATE DATABASE Ex2sa4_db;   
+DROP DATABASE Ex2sa4_db; 
 --Ex.2 
 --DDL (Data Definition Language) 
 --Crie uma tabela chamada "Produtos" com os seguintes campos: ID (chave primária), Nome, Descrição e Preço.
-CREATE TABLE Produtos (
+CREATE TABLE IF NOT EXISTS Produtos (
     ID SERIAL PRIMARY KEY,
     Nome VARCHAR(255) NOT NULL,
     Descricao TEXT,
@@ -92,10 +101,10 @@ CREATE TABLE Produtos (
 ALTER TABLE Produtos
 ADD CONSTRAINT preco_positivo CHECK (Preco > 0);
 --Crie uma tabela chamada “Pedidos” com os campos (ID(PK), Data, Valor, Status)
-CREATE TABLE Pedidos (
+CREATE TABLE IF NOT EXISTS Pedidos (
     ID INT PRIMARY KEY,
     Data DATE,
-    Valor DECIMAL(10, 2),
+    Valor DECIMAL(10, 2), -- nº total de 10 dígitos, dos quais 2 são reservados para a parte decimal
     Status VARCHAR(255)
 );
 --Crie uma tabela de junção chamada "Pedidos_Produtos" para registrar os produtos associados a cada pedido, contendo os campos:
@@ -221,7 +230,7 @@ SELECT ID, Status, Data_Pedido
 FROM Pedidos
 ORDER BY Status, Data_Pedido;
 --Atualize o status de todos os pedidos com mais de 30 dias para "Atrasado".
-UPDATE Pedidos SET Status = 'Atrasado' WHERE Data_Pedido < CURRENT_DATE - INTERVAL '30 days';
+UPDATE Pedidos SET Status = 'Atrasado' WHERE Data_Pedido < CURRENT_DATE - 30;
 --Calcule o total de vendas por categoria de produto.
 SELECT c.Nome AS Categoria, SUM(p.Preco) AS TotalVendas
 FROM Produtos_Categorias pc
