@@ -71,6 +71,15 @@ CREATE TABLE IF NOT EXISTS promocoes (
 ALTER TABLE pizzas ADD COLUMN id_promocao INT;
 UPDATE pizzas SET id_promocao = 1 WHERE nome = 'Mussarela';
 
+CREATE TABLE IF NOT EXISTS horario_funcionamento (
+    id_dia_semana SERIAL PRIMARY KEY,
+    dia_semana VARCHAR(20) NOT NULL,
+    horario_abertura TIME NOT NULL,
+    horario_fechamento TIME NOT NULL
+);
+
+
+
 DROP TABLE IF EXISTS contatos;
 
 INSERT INTO contatos (id_contato, nome, email, cell, pizza, cadastro) VALUES
@@ -124,6 +133,14 @@ INSERT INTO promocoes (nome, desconto) VALUES
 ('Desconto de 20%', 20.00),
 ('Pizza grátis na compra de duas', 100.00);
 
+INSERT INTO horario_funcionamento (dia_semana, horario_abertura, horario_fechamento) VALUES
+('Segunda-feira', '17:00:00', '23:00:00'),
+('Terça-feira', '17:00:00', '23:00:00'),
+('Quarta-feira', '17:00:00', '23:00:00'),
+('Quinta-feira', '17:00:00', '23:00:00'),
+('Sexta-feira', '17:00:00', '23:00:00'),
+('Sábado', '17:00:00', '00:00:00'),
+('Domingo', '17:00:00', '00:00:00');
 
 
 --1. Listar todos os pedidos com detalhes do cliente. Consulta para obter informações sobre os pedidos e os clientes que os fizeram.
@@ -233,4 +250,60 @@ FROM pedido pd
 JOIN pizzas p ON pd.id_pizza = p.id_pizza
 WHERE pd.id_pedido = 3;
 --4. Calcular o total gasto por um cliente. Consulta para somar o valor de todos os pedidos feitos por um cliente específico.
+SELECT
+    c.nome AS cliente,
+    SUM(p.preco) AS total_gasto
+FROM
+    contatos c
+JOIN
+    pedido ped ON c.id_contato = ped.id_contato
+JOIN
+    pizzas p ON ped.id_pizza = p.id_pizza
+GROUP BY
+    c.nome;
+--5. Listar os sabores de pizza mais populares. Consulta para mostrar os sabores de pizza mais pedidos pelos clientes.
+SELECT
+    p.nome AS sabor,
+    COUNT(*) AS total_pedidos
+FROM
+    pizzas p
+JOIN
+    pedido ped ON p.id_pizza = ped.id_pizza
+GROUP BY
+    p.nome
+ORDER BY
+    COUNT(*) DESC;
+--6. Verificar a disponibilidade de um determinado sabor de pizza. Consulta para verificar se um sabor específico de pizza está disponível no momento.
+SELECT
+    nome
+FROM
+    pizzas
+WHERE
+    nome = 'Calabresa';
+--7. Listar todos os funcionários. Consulta para recuperar informações de todos os funcionários da pizzaria.
+SELECT 
+    nome AS Funcionario,
+    atribuicoes AS Atribuicoes,
+    areas_trabalho AS Area
+FROM
+    funcionarios;
+--8. Verificar o horário de funcionamento da pizzaria. Consulta para saber os horários de abertura e fechamento da pizzaria.
+SELECT
+    dia_semana,
+    horario_abertura,
+    horario_fechamento
+FROM
+    horario_funcionamento;
+--9. Listar os pedidos em andamento. Consulta para ver todos os pedidos que ainda não foram entregues.
+SELECT
+    *
+FROM
+    status_pizzas
+WHERE
+    status_entrega = 'Em Andamento';
+--10. Calcular o tempo médio de espera dos pedidos. Consulta para calcular o tempo médio que os clientes esperam pelos pedidos.
+SELECT AVG(EXTRACT(EPOCH FROM (data_entrega - data_pedido))) AS tempo_medio_espera
+FROM pedido
+WHERE status = 'Entregue';
+
 
