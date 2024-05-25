@@ -36,9 +36,12 @@ CREATE TABLE IF NOT EXISTS funcionarios (
 );
 
 ALTER TABLE funcionarios ADD COLUMN id_supervisor INT;
+
 UPDATE funcionarios SET id_supervisor = 4 WHERE nome = 'Marcos Silva';
 UPDATE funcionarios SET id_supervisor = 4 WHERE nome = 'Ana Santos';
 UPDATE funcionarios SET id_supervisor = 4 WHERE nome = 'Pedro Lima';
+
+
 CREATE TABLE IF NOT EXISTS pedido (
     id_pedido SERIAL PRIMARY KEY,
     id_entregas INT NOT NULL,
@@ -58,6 +61,15 @@ CREATE TABLE IF NOT EXISTS pizzas (
     preco DECIMAL(10, 2) NOT NULL,
     ingredientes TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS promocoes (
+    id_promocao SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    desconto DECIMAL(5, 2) NOT NULL
+);
+
+ALTER TABLE pizzas ADD COLUMN id_promocao INT;
+UPDATE pizzas SET id_promocao = 1 WHERE nome = 'Mussarela';
 
 DROP TABLE IF EXISTS contatos;
 
@@ -107,6 +119,12 @@ INSERT INTO pedido (id_pedido, id_entregas, id_contato, id_pizza, data_pedido) V
 (2, 2, 2, 2, '2024-05-25'),
 (3, 3, 3, 3, '2024-05-25');
 
+INSERT INTO promocoes (nome, desconto) VALUES
+('Desconto de 10%', 10.00),
+('Desconto de 20%', 20.00),
+('Pizza grátis na compra de duas', 100.00);
+
+
 
 --1. Listar todos os pedidos com detalhes do cliente. Consulta para obter informações sobre os pedidos e os clientes que os fizeram.
 SELECT 
@@ -138,16 +156,16 @@ FROM
     funcionarios;
 --4. Listar todos os pedidos com status e funcionários responsáveis. Consulta para mostrar os pedidos, seus status e os funcionários responsáveis pelo atendimento.
 SELECT 
-    pedido.id_pedido,
-    status_pizzas.status_producao,
-    status_pizzas.status_entrega,
-    funcionarios.nome AS nome_funcionario
+    p.id_pedido AS pedido_id, 
+    s.status_producao AS status_producao, 
+    s.status_entrega AS status_entrega, 
+    f.nome AS funcionario_responsavel
 FROM 
-    pedido
-LEFT JOIN 
-    status_pizzas ON pedido.id_status = status_pizzas.id_status
-LEFT JOIN 
-    funcionarios ON pedido.id_funcionario = funcionarios.id_funcionario;
+    pedido p
+JOIN 
+    status_pizzas s ON p.id_status = s.id_status
+JOIN 
+    funcionarios f ON s.id_contato = f.id_funcionarios;
 --5. Listar todos os clientes com seus pedidos realizados. Consulta para exibir os clientes e todos os pedidos que eles fizeram.
 SELECT 
     contatos.nome AS nome_cliente,
@@ -189,3 +207,24 @@ SELECT
 INNER JOIN 
     pizzas ON pedido.id_pizza = pizzas.id_pizza;
 --10. Listar todas as pizzas com suas respectivas promoções. Consulta para mostrar todas as pizzas e suas promoções.
+SELECT 
+    p.nome AS pizza, 
+    COALESCE(pr.nome, 'Sem promoção') AS promocao, 
+    COALESCE(CONCAT(pr.desconto, '% de desconto'), '') AS detalhes_promocao
+FROM 
+    pizzas p
+LEFT JOIN 
+    promocoes pr ON p.id_promocao = pr.id_promocao;
+--Segunda Parte (Consultas com comandos SQL básicos)
+--1. Listar todos os clientes cadastrados. Consulta para recuperar todos os clientes que já fizeram pedidos na pizzaria.
+SELECT DISTINCT
+    c.nome AS cliente,
+    c.email AS email,
+    c.cell AS celular
+FROM
+    contatos c
+JOIN
+    pedido p ON c.id_contato = p.id_contato;
+
+
+--2. Listar todos os pedidos realizados em um determinado período. Consulta para visualizar todos os pedidos feitos dentro de um intervalo de datas específico.
