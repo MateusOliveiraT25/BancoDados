@@ -30,12 +30,15 @@ CREATE TABLE IF NOT EXISTS status_pizzas (
 
 CREATE TABLE IF NOT EXISTS funcionarios (
     id_funcionarios INT NOT NULL PRIMARY KEY,
-    NOME VARCHAR(255) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
     atribuicoes VARCHAR(255) NOT NULL,
     areas_trabalho VARCHAR(255) NOT NULL
 );
 
-
+ALTER TABLE funcionarios ADD COLUMN id_supervisor INT;
+UPDATE funcionarios SET id_supervisor = 4 WHERE nome = 'Marcos Silva';
+UPDATE funcionarios SET id_supervisor = 4 WHERE nome = 'Ana Santos';
+UPDATE funcionarios SET id_supervisor = 4 WHERE nome = 'Pedro Lima';
 CREATE TABLE IF NOT EXISTS pedido (
     id_pedido SERIAL PRIMARY KEY,
     id_entregas INT NOT NULL,
@@ -90,6 +93,9 @@ INSERT INTO funcionarios (id_funcionarios, nome, atribuicoes, areas_trabalho) VA
 (1, 'Marcos Silva', 'Pizzaiolo', 'Cozinha'),
 (2, 'Ana Santos', 'Entregadora', 'Entrega'),
 (3, 'Pedro Lima', 'Atendente', 'Atendimento');
+(4, 'Lionel Messi', 'Supervisor', 'Escritorio');
+
+
 
 INSERT INTO pizzas (id_pizza, nome, tamanho, preco, ingredientes) VALUES
 (1, 'Mussarela', 'Grande', 30.00, 'Queijo, Molho de Tomate, Orégano'),
@@ -171,10 +177,15 @@ FROM
 INNER JOIN 
     entregas ON pedido.id_entregas = entregas.ID_ENTREGAS;
 --8. Listar todos os funcionários com seus respectivos supervisores. Consulta para exibir os funcionários e seus supervisores.
+SELECT f.nome AS funcionario, s.nome AS supervisor
+FROM funcionarios f
+LEFT JOIN funcionarios s ON f.id_supervisor = s.id_funcionarios;
+--9. Listar todos os itens de pedidos com seus respectivos tamanhos. Consulta para mostrar os itens de pedidos e os tamanhos das pizzas associadas a eles.
 SELECT 
-    f1.nome AS nome_funcionario,
-    f2.nome AS nome_supervisor
-FROM 
-    funcionarios AS f1
-LEFT JOIN 
-    funcionarios AS f2 ON f1.id_supervisor = f2.id_funcionario;
+    pedido.id_pedido,
+    pizzas.tamanho AS tamanho_pizza
+ FROM 
+    pedido
+INNER JOIN 
+    pizzas ON pedido.id_pizza = pizzas.id_pizza;
+--10. Listar todas as pizzas com suas respectivas promoções. Consulta para mostrar todas as pizzas e suas promoções.
