@@ -156,16 +156,14 @@ FROM
     funcionarios;
 --4. Listar todos os pedidos com status e funcionários responsáveis. Consulta para mostrar os pedidos, seus status e os funcionários responsáveis pelo atendimento.
 SELECT 
-    p.id_pedido AS pedido_id, 
-    s.status_producao AS status_producao, 
-    s.status_entrega AS status_entrega, 
-    f.nome AS funcionario_responsavel
+    pedido.id_pedido,
+    pedido.data_pedido,
+    status_pizzas.status_producao,
+    status_pizzas.status_entrega
 FROM 
-    pedido p
+    pedido
 JOIN 
-    status_pizzas s ON p.id_status = s.id_status
-JOIN 
-    funcionarios f ON s.id_contato = f.id_funcionarios;
+    status_pizzas ON pedido.id_pedido = status_pizzas.id_pedido;
 --5. Listar todos os clientes com seus pedidos realizados. Consulta para exibir os clientes e todos os pedidos que eles fizeram.
 SELECT 
     contatos.nome AS nome_cliente,
@@ -225,6 +223,14 @@ FROM
     contatos c
 JOIN
     pedido p ON c.id_contato = p.id_contato;
-
-
 --2. Listar todos os pedidos realizados em um determinado período. Consulta para visualizar todos os pedidos feitos dentro de um intervalo de datas específico.
+SELECT *
+FROM pedido
+WHERE data_pedido BETWEEN '2024-05-01' AND '2024-05-31';
+--3. Listar os itens de um pedido específico. Consulta para ver todos os itens (pizzas,bebidas, etc.) em um pedido específico.
+SELECT p.nome AS item_pedido, p.preco
+FROM pedido pd
+JOIN pizzas p ON pd.id_pizza = p.id_pizza
+WHERE pd.id_pedido = 3;
+--4. Calcular o total gasto por um cliente. Consulta para somar o valor de todos os pedidos feitos por um cliente específico.
+
