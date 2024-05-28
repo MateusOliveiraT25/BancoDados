@@ -59,7 +59,7 @@ body {
 .read .create-contact {
     display: inline-block;
     text-decoration: none;
-    background-color: #376ab7;
+    background-color: #3f69a8;
     font-weight: bold;
     font-size: 14px;
     color: #FFFFFF;
@@ -67,7 +67,7 @@ body {
     margin: 15px 0;
 }
 .read .create-contact:hover {
-    background-color: #376ab7;
+    background-color: #3f69a8;
 }
 .read .pagination {
     display: flex;
@@ -108,7 +108,7 @@ body {
     background-color: #fbfcfc;
 }
 .read table tbody tr:hover {
-    background-color: #376ab7;
+    background-color: #3f69a8;
 }
 .read table tbody tr:hover td {
     color: #FFFFFF;
@@ -165,7 +165,7 @@ body {
 }
 .update form input[type="submit"] {
     display: block;
-    background-color: #376ab7;
+    background-color: #3f69a8;
     border: 0;
     font-weight: bold;
     font-size: 14px;
@@ -175,7 +175,7 @@ body {
   margin-top: 15px;
 }
 .update form input[type="submit"]:hover {
-    background-color: #376ab7;
+    background-color: #3f69a8;
 }
 .delete .yesno {
     display: flex;
@@ -191,4 +191,76 @@ body {
 }
 .delete .yesno a:hover {
     background-color: #a33131;
+}
+
+/* Estilo para a caixa de seleção personalizada */
+.custom-select {
+    display: inline-block;
+    width: 83%;
+    height: 36px;
+    padding: 6px 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #495057;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  /* Estilo para a seta na caixa de seleção */
+  .custom-select::after {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    content: '\25BC';
+    font-size: 14px;
+    color: #495057;
+  }
+  
+  /* Estilo para quando a caixa de seleção está focada */
+  .custom-select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .error {
+    color:white;
+    background-color: #3f69a8;
+    border: 1px solid #3f69a8;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+
+button[type="submit"] {
+    padding: 8px 20px;
+    background-color: #3f69a8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #3f69a8;
+}
+
+button[type="button"] {
+    padding: 8px 20px;
+    background-color: #3f69a8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="button"]:hover {
+    background-color: #3f69a8;
 }
